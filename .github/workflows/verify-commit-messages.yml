@@ -13,5 +13,5 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: webiny/action-conventional-commits@v1.3.0
-        with:
+        # with:
         #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Optional, for private repositories.
