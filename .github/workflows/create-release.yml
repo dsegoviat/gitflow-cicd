@@ -5,12 +5,22 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release-please
         with:
           release-type: simple
+          target-branch: main
+          skip-github-pull-request: true
+      - name: Run git stuff
+        shell: bash
+        run: |
+            git status
+            git branch
+            echo "GitHub Output"
+            echo $GITHUB_OUTPUT
+            echo "${{join(steps.release-please.outputs.*, '\n')}}"
