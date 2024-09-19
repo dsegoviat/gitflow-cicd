@@ -1,15 +1,12 @@
 #!/bin/sh
 
-echo "Running commit message checks..."
-
 . "$(dirname -- "$0")/text-styles.sh"
 
 
 # Get the commit message
 commit="$(cat .git/COMMIT_EDITMSG)"
 # Define the conventional commit regex
-regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?: .+$"
-
+regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?(!)?: .+$"
 
 # Check if the commit message matches the conventional commit format
 if ! echo "$commit" | grep -qE "$regex"
