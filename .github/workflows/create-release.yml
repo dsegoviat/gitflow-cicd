@@ -15,7 +15,7 @@ jobs:
         id: release-please
         with:
           release-type: simple
-        #   target-branch: develop
+          target-branch: develop
         #   skip-github-pull-request: true
         #   skip-relea
     #   - uses: actions/checkout@v4
