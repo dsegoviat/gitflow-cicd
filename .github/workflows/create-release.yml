@@ -17,7 +17,7 @@ jobs:
         with:
           release-type: simple
           target-branch: develop
-          skip-github-pull-request: true
+        #   skip-github-pull-request: true
       - name: Run git stuff
         shell: bash
         run: |
