@@ -11,13 +11,14 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - uses: googleapis/release-please-action@v4
         id: release-please
         with:
           release-type: simple
-          target-branch: develop
+        #   target-branch: develop
         #   skip-github-pull-request: true
+        #   skip-relea
+      - uses: actions/checkout@v4
       - name: Run git stuff
         shell: bash
         run: |
