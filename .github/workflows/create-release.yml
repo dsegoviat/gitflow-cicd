@@ -18,12 +18,12 @@ jobs:
         #   target-branch: develop
         #   skip-github-pull-request: true
         #   skip-relea
-      - uses: actions/checkout@v4
-      - name: Run git stuff
-        shell: bash
-        run: |
-            git status
-            git branch
-            echo "GitHub Output"
-            echo $GITHUB_OUTPUT
-            echo "${{join(steps.release-please.outputs.*, '\n')}}"
+    #   - uses: actions/checkout@v4
+    #   - name: Run git stuff
+    #     shell: bash
+    #     run: |
+    #         git status
+    #         git branch
+    #         echo "GitHub Output"
+    #         echo $GITHUB_OUTPUT
+    #         echo "${{join(steps.release-please.outputs.*, '\n')}}"
