@@ -3,27 +3,11 @@ name: Create new release
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  release-please:
+  create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
-        id: release-please
+      - uses: cycjimmy/semantic-release-action@v4
         with:
-          release-type: simple
-          target-branch: develop
-        #   skip-github-pull-request: true
-        #   skip-relea
-    #   - uses: actions/checkout@v4
-    #   - name: Run git stuff
-    #     shell: bash
-    #     run: |
-    #         git status
-    #         git branch
-    #         echo "GitHub Output"
-    #         echo $GITHUB_OUTPUT
-    #         echo "${{join(steps.release-please.outputs.*, '\n')}}"
+        env:
+            GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
