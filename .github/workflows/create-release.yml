@@ -25,4 +25,4 @@ jobs:
                 @semantic-release/exec
                 conventional-changelog-conventionalcommits
         env:
-            GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+            GITHUB_TOKEN: ${{ github.token }}
