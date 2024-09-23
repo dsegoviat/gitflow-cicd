@@ -32,4 +32,5 @@ git commit -m "chore(release): prepare for release $VERSION"
 git push origin release/$VERSION
 
 # Create a pull request using GitHub CLI
-gh pr create --base master --head release/$VERSION --title "Release $VERSION" --body "Please review the release $VERSION changes"
+# TODO: change to 'master'
+gh pr create --base main --head release/$VERSION --title "Release $VERSION" --body "Please review the release $VERSION changes"
