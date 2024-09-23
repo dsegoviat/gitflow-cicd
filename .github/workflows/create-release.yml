@@ -37,3 +37,5 @@ jobs:
           gh pr create -B main -H $BRANCH_NAME \
             --title 'Release v${{ steps.release.outputs.new_release_version }}' \
             --body 'Created by Github action'
+        env:
+          GH_TOKEN: ${{ github.token }}
