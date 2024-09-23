@@ -2,8 +2,9 @@ name: Commit Linter
 
 on:
   pull_request:
-    branches-ignore: [ feature/* ]
-    # branches: [ develop, release/*, master, main ]
+    branches:
+      - master
+      - develop
     types: [ opened, synchronize, reopened ]
 
 jobs:
