@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 permissions:
-    contents: write
-    issues: write
-    pull-requests: write
+  contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   create-release:
@@ -14,8 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cycjimmy/semantic-release-action@v4
+        id: release
         with:
             semantic_version: 24
+            dry_run: true
             extra_plugins: |
                 @semantic-release/commit-analyzer
                 @semantic-release/release-notes-generator
@@ -26,3 +28,12 @@ jobs:
                 conventional-changelog-conventionalcommits
         env:
             GITHUB_TOKEN: ${{ github.token }}
+      - name: Create release PR
+        shell: bash
+        run: |
+          BRANCH_NAME=release/${{ steps.release.outputs.new_release_version }}
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+          gh pr create -B main -H $BRANCH_NAME \
+            --title 'Release v${{ steps.release.outputs.new_release_version }}' \
+            --body 'Created by Github action'
