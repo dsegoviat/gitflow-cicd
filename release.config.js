@@ -5,11 +5,12 @@ module.exports = {
     ["@semantic-release/commit-analyzer", { preset }],
     ["@semantic-release/release-notes-generator", { preset }],
     [
-      "semantic-release-github-pullrequest", {
-        assets: ["CHANGELOG.md"],
-        baseRef: "main",
-        branch: "release/${nextRelease.version}"
-      }
-    ]
-  ]
+      "@semantic-release/exec",
+      {
+        publishCmd: "./release.sh ${nextRelease.version} ${branch.name}",
+      },
+    ],
+    ["@semantic-release/changelog", { changelogFile: "CHANGELOG.md" }],
+    ["@semantic-release/github"]
+  ],
 };
