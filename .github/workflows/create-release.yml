@@ -17,6 +17,7 @@ jobs:
         id: release
         with:
             semantic_version: 24
+            ci: true
             dry_run: true
             extra_plugins: |
                 @semantic-release/commit-analyzer
@@ -28,14 +29,17 @@ jobs:
                 conventional-changelog-conventionalcommits
         env:
             GITHUB_TOKEN: ${{ github.token }}
+      # TODO: check if release PR is already active and fail
       - name: Create release PR
         shell: bash
         run: |
           BRANCH_NAME=release/${{ steps.release.outputs.new_release_version }}
+          git status
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
           gh pr create -B main -H $BRANCH_NAME \
             --title 'Release v${{ steps.release.outputs.new_release_version }}' \
-            --body 'Created by Github action'
+            --body '${{ steps.release.outputs.new_release_notes }}'
         env:
           GH_TOKEN: ${{ github.token }}
+      # TODO: add summary with link to PR
