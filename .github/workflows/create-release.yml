@@ -3,25 +3,43 @@ name: Create new release
 on:
   workflow_dispatch:
 
-permissions: write-all
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
-  release-please:
+  create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
-        id: release-please
+      - uses: actions/checkout@v4
+      - uses: cycjimmy/semantic-release-action@v4
+        id: release
         with:
-          release-type: simple
-          target-branch: main
-        #   skip-github-pull-request: true
-        #   skip-relea
-    #   - uses: actions/checkout@v4
-    #   - name: Run git stuff
-    #     shell: bash
-    #     run: |
-    #         git status
-    #         git branch
-    #         echo "GitHub Output"
-    #         echo $GITHUB_OUTPUT
-    #         echo "${{join(steps.release-please.outputs.*, '\n')}}"
+            semantic_version: 24
+            ci: true
+            dry_run: true
+            extra_plugins: |
+                @semantic-release/commit-analyzer
+                @semantic-release/release-notes-generator
+                @semantic-release/changelog
+                @semantic-release/github
+                @semantic-release/git
+                @semantic-release/exec
+                conventional-changelog-conventionalcommits
+        env:
+            GITHUB_TOKEN: ${{ github.token }}
+      # TODO: check if release PR is already active and fail
+      - name: Create release PR
+        shell: bash
+        run: |
+          BRANCH_NAME=release/${{ steps.release.outputs.new_release_version }}
+          git status
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+          gh pr create -B main -H $BRANCH_NAME \
+            --title 'Release v${{ steps.release.outputs.new_release_version }}' \
+            --body '${{ steps.release.outputs.new_release_notes }}'
+        env:
+          GH_TOKEN: ${{ github.token }}
+      # TODO: add summary with link to PR
