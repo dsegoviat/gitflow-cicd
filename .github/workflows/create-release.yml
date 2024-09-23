@@ -24,5 +24,6 @@ jobs:
                 @semantic-release/git
                 @semantic-release/exec
                 conventional-changelog-conventionalcommits
+                semantic-release-github-pullrequest
         env:
             GITHUB_TOKEN: ${{ github.token }}
