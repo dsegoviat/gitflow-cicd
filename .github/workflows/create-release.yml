@@ -20,11 +20,11 @@ jobs:
             extra_plugins: |
               @semantic-release/commit-analyzer
               @semantic-release/release-notes-generator
+              conventional-changelog-conventionalcommits
               @semantic-release/changelog
               @semantic-release/github
               @semantic-release/git
-              @semantic-release/exec
-              conventional-changelog-conventionalcommits
+              @saithodev/semantic-release-backmerge
         env:
             GITHUB_TOKEN: ${{ github.token }}
       # TODO: check if release PR is already active and fail-fast
