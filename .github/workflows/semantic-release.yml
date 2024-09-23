@@ -1,10 +1,11 @@
 name: Semantic Release
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
-      - develop
+      - develop # TODO: remove
       - hotfix/*
       - release/*
 
