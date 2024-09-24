@@ -33,6 +33,7 @@ jobs:
             GITHUB_TOKEN: ${{ github.token }}
       # TODO: check if release PR is already active and fail-fast
       # TODO: move all of this into a script (easier to troubleshoot)
+      - name: Check if PR already exists
       - name: Create release PR
         shell: bash
         if: ${{ steps.release.outputs.new_release_version != '' }} 
@@ -42,7 +43,7 @@ jobs:
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
           gh pr create -B main -H $BRANCH_NAME \
-            --title 'Release v${RELEASE_VERSION}' \
+            --title "Release v${RELEASE_VERSION}"" \
             --body '${{ steps.release.outputs.new_release_notes }}' \
             --label release
         env:
