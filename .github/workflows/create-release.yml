@@ -3,7 +3,8 @@ name: Create Release
 on:
   workflow_dispatch:
   push: 
-    branches: ["main"]
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -19,12 +20,12 @@ jobs:
         id: check
         shell: bash
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "is-dry-run=false" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
             echo "is-dry-run=true" >> $GITHUB_OUTPUT
           else
-            echo "::error::This workflow can only be executed from develop or master."
+            echo "::error::This workflow can only be executed from develop or main."
             exit 1
           fi
       - uses: cycjimmy/semantic-release-action@v4
