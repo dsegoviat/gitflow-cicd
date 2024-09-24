@@ -1,8 +1,8 @@
 const preset = "conventionalcommits";
 module.exports = {
   branches: [
-    { name: "main" },
-    { name: "develop", prerelease: "beta" },
+    { name: "main" },
+    { name: "develop", prerelease: true, channel: "dev" },
     { name: "release/*", prerelease: "rc", channel: "next" },
     { name: "hotfix/*", prerelease: "fix", channel: "hotfix" },
   ],
@@ -11,15 +11,18 @@ module.exports = {
     ["@semantic-release/release-notes-generator", { preset }],
     ["@semantic-release/changelog", { changelogFile: "CHANGELOG.md" }],
     ["@semantic-release/github"],
-    ["@semantic-release/git", {
-      "assets": ["CHANGELOG.md"],
-      "message": "chore(release): ${nextRelease.version} [skip ci]"
-    }],
+    [
+      "@semantic-release/git",
+      {
+        assets: ["CHANGELOG.md"],
+        message: "chore(release): ${nextRelease.version}",
+      },
+    ],
     [
       "@saithodev/semantic-release-backmerge",
       {
         clearWorkspace: true,
-        backmergeStrategy: "merge",
+        backmergeBranches: [{ from: "master", to: "develop" }],
         mergeMode: "ours",
       },
     ],
