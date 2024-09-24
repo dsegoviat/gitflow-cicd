@@ -33,7 +33,6 @@ jobs:
             GITHUB_TOKEN: ${{ github.token }}
       # TODO: check if release PR is already active and fail-fast
       # TODO: move all of this into a script (easier to troubleshoot)
-      - name: Check if PR already exists
       - name: Create release PR
         shell: bash
         if: ${{ steps.release.outputs.new_release_version != '' }} 
