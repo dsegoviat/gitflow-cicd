@@ -2,9 +2,6 @@ const preset = "conventionalcommits";
 module.exports = {
   branches: [
     { name: "main" },
-    { name: "develop", prerelease: "dev", channel: "dev" },
-    { name: "release/*", prerelease: "rc", channel: "next" },
-    { name: "hotfix/*", prerelease: "fix", channel: "hotfix" },
   ],
   plugins: [
     ["@semantic-release/commit-analyzer", { preset }],
@@ -22,7 +19,7 @@ module.exports = {
       "@saithodev/semantic-release-backmerge",
       {
         clearWorkspace: true,
-        backmergeBranches: [{ from: "master", to: "develop" }],
+        // backmergeBranches: [{ from: "master", to: "develop" }],
         mergeMode: "ours",
       },
     ],
