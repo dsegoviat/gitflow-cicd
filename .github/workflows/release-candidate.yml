@@ -1,0 +1,53 @@
+name: Open release PR (release candidate)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "release/*" ]
+    types: [ "synchronize" ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cycjimmy/semantic-release-action@v4
+        id: release
+        with:
+            semantic_version: 24
+            ci: true
+            dry_run: true
+            extra_plugins: |
+              @semantic-release/commit-analyzer
+              @semantic-release/release-notes-generator
+              conventional-changelog-conventionalcommits
+              @semantic-release/changelog
+              @semantic-release/github
+              @semantic-release/git
+              @saithodev/semantic-release-backmerge
+        env:
+            GITHUB_TOKEN: ${{ github.token }}
+      # TODO: check if release PR is already active and fail-fast
+      - name: Create release PR
+        shell: bash
+        run: |
+          RELEASE_VERSION=${{ steps.release.outputs.new_release_version }}
+          if [ -z "$RELEASE_VERSION" ]; then
+            echo "::error:: Bumped version is empty."
+            exit 1
+          fi
+          BRANCH_NAME=release/$RELEASE_VERSION
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+          gh pr create -B main -H $BRANCH_NAME \
+            --title 'Release v$RELEASE_VERSION' \
+            --body '${{ steps.release.outputs.new_release_notes }}'
+            --label release \
+            --label $RELEASE_VERSION
+        env:
+          GH_TOKEN: ${{ github.token }}
+      # TODO: add summary with link to PR
