@@ -1,3 +1,10 @@
+## [2.0.0-beta.2](https://github.com/dsegoviat/gitflow-cicd/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2024-09-24)
+
+### Features
+
+* commit changelog ([e8773a4](https://github.com/dsegoviat/gitflow-cicd/commit/e8773a4721f2921b6d44a0b4a6b8ff5502c2c26c))
+* remove develop from trigger ([a0e020e](https://github.com/dsegoviat/gitflow-cicd/commit/a0e020e6f752be643567fa976547a2a169569972))
+
 # Changelog
 
 ## [2.0.0](https://github.com/dsegoviat/gitflow-cicd/compare/v1.0.0...v2.0.0) (2024-09-19)
