@@ -44,8 +44,7 @@ jobs:
           gh pr create -B main -H $BRANCH_NAME \
             --title 'Release v$RELEASE_VERSION' \
             --body '${{ steps.release.outputs.new_release_notes }}' \
-            --label release \
-            --label $RELEASE_VERSION
+            --label release
         env:
           GH_TOKEN: ${{ github.token }}
       # TODO: add summary with link to PR
