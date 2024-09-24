@@ -32,14 +32,12 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ github.token }}
       # TODO: check if release PR is already active and fail-fast
+      # TODO: move all of this into a script (easier to troubleshoot)
       - name: Create release PR
         shell: bash
+        if: ${{ steps.release.outputs.new_release_version != '' }} 
         run: |
           RELEASE_VERSION=${{ steps.release.outputs.new_release_version }}
-          if [ -z "$RELEASE_VERSION" ]; then
-            echo "::error:: Bumped version is empty."
-            exit 1
-          fi
           BRANCH_NAME=release/$RELEASE_VERSION
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
