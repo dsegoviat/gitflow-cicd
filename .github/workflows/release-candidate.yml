@@ -42,7 +42,7 @@ jobs:
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
           gh pr create -B main -H $BRANCH_NAME \
-            --title "Release v${RELEASE_VERSION}"" \
+            --title "Release v${RELEASE_VERSION}" \
             --body '${{ steps.release.outputs.new_release_notes }}' \
             --label release
         env:
