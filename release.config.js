@@ -2,7 +2,7 @@ const preset = "conventionalcommits";
 module.exports = {
   branches: [
     { name: "main" },
-    { name: "develop", prerelease: "dev", channel: "beta" },
+    { name: "develop" },
   ],
   plugins: [
     ["@semantic-release/commit-analyzer", { preset }],
