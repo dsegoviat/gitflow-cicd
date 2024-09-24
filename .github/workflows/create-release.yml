@@ -1,4 +1,4 @@
-name: Open release PR (release candidate)
+name: Create Release
 
 on:
   workflow_dispatch:
