@@ -11,6 +11,10 @@ module.exports = {
     ["@semantic-release/release-notes-generator", { preset }],
     ["@semantic-release/changelog", { changelogFile: "CHANGELOG.md" }],
     ["@semantic-release/github"],
+    ["@semantic-release/git", {
+      "assets": ["CHANGELOG.md"],
+      "message": "chore(release): ${nextRelease.version} [skip ci]"
+    }],
     [
       "@saithodev/semantic-release-backmerge",
       {
