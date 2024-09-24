@@ -5,6 +5,13 @@
 
 # Get the commit message
 commit="$(cat .git/COMMIT_EDITMSG)"
+
+# Accept merge commits
+merge_regex="^Merge branch "
+if echo "$commit" | grep -qE "$merge_regex"; then
+  exit 0
+fi
+
 # Define the conventional commit regex
 regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?(!)?: .+$"
 
