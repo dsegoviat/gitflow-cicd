@@ -49,7 +49,7 @@ jobs:
             GIT_COMMITTER_EMAIL: noreply@mercedes-benz.com
       - name: Create release PR
         shell: bash
-        if: ${{ github.ref == "refs/heads/develop" && steps.release.outputs.new_release_version != '' }} 
+        if: github.ref == 'refs/heads/develop' && steps.release.outputs.new_release_version != ''
         run: |
           RELEASE_VERSION=${{ steps.release.outputs.new_release_version }}
           RELEASE_BRANCH=release/$RELEASE_VERSION
