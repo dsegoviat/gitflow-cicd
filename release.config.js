@@ -2,7 +2,7 @@ const preset = "conventionalcommits";
 module.exports = {
   branches: [
     { name: "main" },
-    { name: "develop", prerelease: true, channel: "dev" },
+    { name: "develop", prerelease: "dev", channel: "dev" },
     { name: "release/*", prerelease: "rc", channel: "next" },
     { name: "hotfix/*", prerelease: "fix", channel: "hotfix" },
   ],
