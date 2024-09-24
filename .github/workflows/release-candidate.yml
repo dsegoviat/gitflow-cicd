@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: Check if dry run
+      - name: Check if dry run
         id: check
         shell: bash
         run: |
