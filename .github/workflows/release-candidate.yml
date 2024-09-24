@@ -2,25 +2,37 @@ name: Open release PR (release candidate)
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ "release/*" ]
-    types: [ "synchronize" ]
+  push: 
+    branches: ["master"]
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
 
 jobs:
-  create-release-pr:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: Check if dry run
+        id: check
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            echo "is-dry-run=false" >> $GITHUB_OUTPUT
+          else if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "is-dry-run=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::This workflow can only be executed from develop or master."
+            exit 1
+          fi
       - uses: cycjimmy/semantic-release-action@v4
         id: release
         with:
             semantic_version: 24
             ci: true
-            dry_run: true
+            dry_run: ${{ steps.check.outputs.is-dry-run }}
             extra_plugins: |
               @semantic-release/commit-analyzer
               @semantic-release/release-notes-generator
@@ -31,20 +43,29 @@ jobs:
               @saithodev/semantic-release-backmerge
         env:
             GITHUB_TOKEN: ${{ github.token }}
-      # TODO: check if release PR is already active and fail-fast
-      # TODO: move all of this into a script (easier to troubleshoot)
+            GIT_AUTHOR_NAME: github-actions[bot]
+            GIT_AUTHOR_EMAIL: noreply@mercedes-benz.com
+            GIT_COMMITTER_NAME: github-actions[bot]
+            GIT_COMMITTER_EMAIL: noreply@mercedes-benz.com
       - name: Create release PR
         shell: bash
-        if: ${{ steps.release.outputs.new_release_version != '' }} 
+        if: ${{ github.ref == "refs/heads/develop" && steps.release.outputs.new_release_version != '' }} 
         run: |
           RELEASE_VERSION=${{ steps.release.outputs.new_release_version }}
-          BRANCH_NAME=release/$RELEASE_VERSION
-          git checkout -b $BRANCH_NAME
-          git push origin $BRANCH_NAME
-          gh pr create -B main -H $BRANCH_NAME \
-            --title "Release v${RELEASE_VERSION}" \
-            --body '${{ steps.release.outputs.new_release_notes }}' \
-            --label release
+          RELEASE_BRANCH=release/$RELEASE_VERSION
+
+          if ! git ls-remote --heads origin $RELEASE_BRANCH | grep -q 'refs/heads'; then
+            git checkout -b $RELEASE_BRANCH
+            git push origin $RELEASE_BRANCH
+          fi
+
+          # Check if a PR from this branch already exists
+          if ! gh pr list --head $RELEASE_BRANCH --label "release" | grep -q $RELEASE_BRANCH; then
+            gh pr create -B main -H $RELEASE_BRANCH \
+              --title "Release v${RELEASE_VERSION}" \
+              --body '${{ steps.release.outputs.new_release_notes }}' \
+              --label release
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
       # TODO: add summary with link to PR
